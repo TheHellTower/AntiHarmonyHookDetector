@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using System;
 using System.IO;
 using System.Reflection;
@@ -62,7 +62,7 @@ namespace AntiHarmonyHookDetector
 
         [HarmonyPatch(typeof(Hooked.Program), "isCracked")]
         public static void PostFix(ref bool __result) { //Harmony want a void method type for Prefix and Postif so you need to use a ref to modify the output of your targeted method.
-            Console.WriteLine("Original Method Result: {0} | Patched Method Result: {1}", __result, true);
+            Console.WriteLine($"Original Method Result: {__result} | Patched Method Result: true");
             __result = true; //Here we are setting the returned value to be true whatever happen
         }
 
@@ -73,7 +73,7 @@ namespace AntiHarmonyHookDetector
         public static void PostFixM(IntPtr ptr, ref byte __result) //The targeted method take a IntPtr(a pointer)
         {
             if (__result == 0xE9)
-                Console.WriteLine(string.Format("Original Method Result: {0} | Patched Method Result: {1}", "0xE9", "0xE8")); //If it is 0xE9 it mean detected so we set it to 0xE8 to remove this detection, "0" could break the application.
+                Console.WriteLine("Original Method Result: 0xE9 | Patched Method Result: 0xE8"); //If it is 0xE9 it mean detected so we set it to 0xE8 to remove this detection, "0" could break the application.
             __result = (byte)(__result == 0xE9 ? 0xE8 : __result);
         }
     }
